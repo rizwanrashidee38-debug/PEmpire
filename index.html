@@ -1,1 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adult Studio Tycoon</title>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --card-bg: #1c1c21;
+            --primary: #ff4757;
+            --primary-hover: #ff6b81;
+            --text: #ffffff;
+            --text-muted: #a4b0be;
+            --border: #2f3542;
+            --success: #2ed573;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        h1 { color: var(--primary); font-size: 24px; }
+
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-item { font-weight: bold; }
+        .stat-item span { color: var(--success); }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 { margin-bottom: 10px; color: var(--text); }
+        .card p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover { background: var(--primary-hover); }
+        .btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+
+        /* Production Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        select, input {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        /* Log / Console */
+        .log-container {
+            grid-column: 1 / -1;
+            background: #000;
+            border-radius: 6px;
+            padding: 15px;
+            height: 150px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #00ff00;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Adult Studio Tycoon</h1>
+            <p style="color: var(--text-muted); font-size: 12px;">Build Your Adult Media Empire</p>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-item">Cash: <span id="cash-display">$10,000</span></div>
+            <div class="stat-item">Subscribers: <span id="subs-display" style="color: #3498db;">0</span></div>
+            <div class="stat-item">Day: <span id="day-display" style="color: #f1c40f;">1</span></div>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('production')">Production</button>
+        <button class="tab-btn" onclick="switchTab('roster')">Roster</button>
+        <button class="tab-btn" onclick="switchTab('recruit')">Recruit Talent</button>
+    </nav>
+
+    <!-- PRODUCTION TAB -->
+    <div id="production" class="tab-content active">
+        <div class="card">
+            <h3>Shoot Next Scene</h3>
+            <div class="form-group">
+                <label for="video-title">Video Title</label>
+                <input type="text" id="video-title" value="Spicy Debut">
+            </div>
+            <div class="form-group">
+                <label for="performer-select">Select Performer</label>
+                <select id="performer-select">
+                    <!-- Loaded dynamically via JS -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="genre-select">Genre/Niche</label>
+                <select id="genre-select">
+                    <option value="Vanilla">Vanilla Romance</option>
+                    <option value="Fetish">Alternative / Fetish</option>
+                    <option value="Parody">Pop-Culture Parody</option>
+                    <option value="POV">Gonzo / POV</option>
+                </select>
+            </div>
+            <button class="btn" onclick="shootVideo()">Release Scene (-$1,500 Cost)</button>
+        </div>
+
+        <div class="card">
+            <h3>Studio Status</h3>
+            <p>Every video you release drives ongoing daily subscription growth based on your performers' total charisma scores.</p>
+            <button class="btn" style="background-color: #2ed573;" onclick="nextDay()">Advance to Next Day</button>
+        </div>
+    </div>
+
+    <!-- ROSTER TAB -->
+    <div id="roster" class="tab-content">
+        <!-- Loaded via JS -->
+    </div>
+
+    <!-- RECRUIT TAB -->
+    <div id="recruit" class="tab-content">
+        <!-- Loaded via JS -->
+    </div>
+
+    <!-- SYSTEM ACTIVITY LOG -->
+    <div style="margin-top: 30px;">
+        <h4 style="margin-bottom: 10px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Studio Notifications</h4>
+        <div class="log-container" id="log-box">
+            [System]: Studio open for business. Recruit stars and shoot content to acquire subscribers.
+        </div>
+    </div>
+
+    <script>
+        // Game State Variables
+        let state = {
+            cash: 10000,
+            subs: 0,
+            day: 1,
+            myRoster: [
+                { id: 101, name: "Alex Nova", charisma: 14, style: "Vanilla", cost: 0 },
+                { id: 102, name: "Jordan Lux", charisma: 18, style: "POV", cost: 0 }
+            ],
+            recruits: [
+                { id: 1, name: "Vesper Thorne", charisma: 25, style: "Fetish", cost: 3000 },
+                { id: 2, name: "Harley Wilde", charisma: 32, style: "Parody", cost: 5500 },
+                { id: 3, name: "Sienna Silk", charisma: 45, style: "Vanilla", cost: 9000 }
+            ]
+        };
+
+        // Constants
+        const PRODUCTION_COST = 1500;
+        const SUB_REVENUE_PER_CAPITA = 0.50; // Cash earned per subscriber daily
+
+        // Initialize UI Elements
+        function updateUI() {
+            document.getElementById('cash-display').innerText = `$${state.cash.toLocaleString()}`;
+            document.getElementById('subs-display').innerText = state.subs.toLocaleString();
+            document.getElementById('day-display').innerText = state.day;
+
+            // Update Performer Dropdown inside Production panel
+            const select = document.getElementById('performer-select');
+            select.innerHTML = '';
+            state.myRoster.forEach(p => {
+                select.innerHTML += `<option value="${p.id}">${p.name} (Charisma: ${p.charisma})</option>`;
+            });
+
+            // Update Roster View Tab
+            const rosterTab = document.getElementById('roster');
+            if(state.myRoster.length === 0) {
+                rosterTab.innerHTML = `<div class="card"><p>Your active roster is empty. Go recruit talent!</p></div>`;
+            } else {
+                rosterTab.innerHTML = state.myRoster.map(p => `
+                    <div class="card">
+                        <h3>${p.name}</h3>
+                        <p>Specialty: <strong>${p.style}</strong></p>
+                        <p>Charisma Level: <strong>${p.charisma}</strong></p>
+                    </div>
+                `).join('');
+            }
+
+            // Update Recruitment Panel Tab
+            const recruitTab = document.getElementById('recruit');
+            if(state.recruits.length === 0) {
+                recruitTab.innerHTML = `<div class="card"><p>No new applications today. Check back tomorrow.</p></div>`;
+            } else {
+                recruitTab.innerHTML = state.recruits.map(p => `
+                    <div class="card">
+                        <h3>${p.name}</h3>
+                        <p>Niche Market: <strong>${p.style}</strong></p>
+                        <p>Starting Charisma: <strong>${p.charisma}</strong></p>
+                        <p>Signing Fee: <strong>$${p.cost.toLocaleString()}</strong></p>
+                        <button class="btn" onclick="hirePerformer(${p.id})" ${state.cash < p.cost ? 'disabled' : ''}>Sign Contract</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Tab Swapping Routine
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Log Console Printer
+        function logMessage(text) {
+            const logBox = document.getElementById('log-box');
+            logBox.innerHTML += `<br>[Day ${state.day}]: ${text}`;
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Primary Action: Release Scene
+        function shootVideo() {
+            if (state.cash < PRODUCTION_COST) {
+                logMessage("⚠️ Error: Insufficient capital to cover production costs.");
+                return;
+            }
+
+            const title = document.getElementById('video-title').value || "Untitled Scene";
+            const performerId = parseInt(document.getElementById('performer-select').value);
+            const genre = document.getElementById('genre-select').value;
+            const performer = state.myRoster.find(p => p.id === performerId);
+
+            if (!performer) {
+                logMessage("⚠️ Error: You must employ at least one performer.");
+                return;
+            }
+
+            // Calculate Subscriber Gain Output
+            let baseGain = performer.charisma * 15;
+            if (performer.style === genre) {
+                baseGain = Math.floor(baseGain * 1.5); // 50% synergy bonus
+                logMessage(`✨ Style Synergy! ${performer.name} excels at ${genre} content.`);
+            }
+
+            state.cash -= PRODUCTION_COST;
+            state.subs += baseGain;
+
+            logMessage(`🎬 Released scene: "${title}" starring ${performer.name}. Gained +${baseGain} new subscribers.`);
+            updateUI();
+        }
+
+        // Action: Sign Contract
+        function hirePerformer(id) {
+            const idx = state.recruits.findIndex(p => p.id === id);
+            if (idx === -1) return;
+            const candidate = state.recruits[idx];
+
+            if (state.cash >= candidate.cost) {
+                state.cash -= candidate.cost;
+                state.myRoster.push(candidate);
+                state.recruits.splice(idx, 1);
+                logMessage(`✍️ Contract signed: ${candidate.name} has joined your studio.`);
+                updateUI();
+            }
+        }
+
+        // Action: Step Clock Forward
+        function nextDay() {
+            // Process subscription revenues
+            let dailyRevenue = Math.floor(state.subs * SUB_REVENUE_PER_CAPITA);
+            state.cash += dailyRevenue;
+
+            // Generate slight passive subscriber flux/decay
+            let naturalGrowth = 0;
+            state.myRoster.forEach(p => { naturalGrowth += Math.floor(p.charisma * 0.5); });
+            state.subs += naturalGrowth;
+
+            state.day += 1;
+            logMessage(`☀️ Day processing complete. Subscriptions netted $${dailyRevenue}. Passive studio clout brought in +${naturalGrowth} new viewers.`);
+            updateUI();
+        }
+
+        // Initial Runtime Execution
+        updateUI();
+    </script>
+</body>
+  </html>
+                                                  
