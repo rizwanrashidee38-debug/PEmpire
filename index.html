@@ -1,19 +1,20 @@
         
-               <!DOCTYPE html>
+                                           
+            <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adult Studio Tycoon: Global Empire</title>
+    <title>Adult Empire: Global Domination</title>
     <style>
         :root {
-            --bg-color: #121214;
-            --card-bg: #1c1c21;
+            --bg-color: #0f0f12;
+            --card-bg: #17171c;
             --primary: #ff4757;
             --primary-hover: #ff6b81;
             --text: #ffffff;
             --text-muted: #a4b0be;
-            --border: #2f3542;
+            --border: #262630;
             --success: #2ed573;
             --accent: #3498db;
         }
@@ -42,22 +43,22 @@
         .stat-item { font-weight: bold; }
         .stat-item span { color: var(--success); }
 
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
         .tab-btn {
             background: var(--card-bg); color: var(--text-muted); border: 1px solid var(--border);
-            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;
+            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; white-space: nowrap;
         }
         .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
         
         .tab-content { display: none; }
-        .tab-content.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .tab-content.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 
         .card {
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
             padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
         }
-        .card h3 { margin-bottom: 10px; color: var(--text); display: flex; justify-content: space-between; align-items: center;}
-        .card p { color: var(--text-muted); font-size: 14px; margin-bottom: 12px; }
+        .card h3 { margin-bottom: 10px; color: var(--text); display: flex; justify-content: space-between; align-items: center; font-size: 18px;}
+        .card p { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; line-height: 1.4; }
         
         .btn {
             background: var(--primary); color: white; border: none; padding: 10px;
@@ -71,7 +72,7 @@
         select, input { width: 100%; background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 6px; }
         
         .performer-checkboxes {
-            max-height: 150px; overflow-y: auto; border: 1px solid var(--border); 
+            max-height: 160px; overflow-y: auto; border: 1px solid var(--border); 
             padding: 10px; border-radius: 6px; background: var(--bg-color);
         }
         .check-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 14px;}
@@ -80,6 +81,9 @@
         .badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; background: var(--border); color: var(--text); }
         .badge.male { background: #2980b9; color: white; }
         .badge.female { background: #e082ac; color: white; }
+        .badge.tier { background: #d35400; color: white; }
+
+        .filter-bar { grid-column: 1 / -1; display: flex; gap: 10px; background: var(--card-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border); }
 
         .log-container {
             grid-column: 1 / -1; background: #000; border-radius: 6px; padding: 15px;
@@ -91,21 +95,21 @@
 
     <header>
         <div>
-            <h1>Adult Studio Tycoon: Global Empire</h1>
-            <p style="color: var(--text-muted); font-size: 12px;">Current Location: <span id="location-display" style="color: var(--accent); font-weight: bold;">Los Angeles</span></p>
+            <h1>Adult Empire: Global Domination</h1>
+            <p style="color: var(--text-muted); font-size: 12px;">Current Corporate HQ: <span id="location-display" style="color: var(--accent); font-weight: bold;">United States</span></p>
         </div>
         <div class="stats-bar">
-            <div class="stat-item">Cash: <span id="cash-display">$25,000</span></div>
-            <div class="stat-item">Subscribers: <span id="subs-display" style="color: var(--accent);">0</span></div>
+            <div class="stat-item">Cash: <span id="cash-display">$35,000</span></div>
+            <div class="stat-item">Subscribers: <span id="subs-display" style="color: var(--accent);">500</span></div>
             <div class="stat-item">Day: <span id="day-display" style="color: #f1c40f;">1</span></div>
         </div>
     </header>
 
     <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('production')">Production</button>
-        <button class="tab-btn" onclick="switchTab('travel')">Travel / Flight</button>
-        <button class="tab-btn" onclick="switchTab('recruit')">Recruit Talent</button>
-        <button class="tab-btn" onclick="switchTab('roster')">Roster</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'production')">Production Studio</button>
+        <button class="tab-btn" onclick="switchTab(event, 'travel')">Flight Departure</button>
+        <button class="tab-btn" onclick="switchTab(event, 'recruit')">Local Agencies</button>
+        <button class="tab-btn" onclick="switchTab(event, 'roster')">Our Talent Roster</button>
     </nav>
 
     <!-- PRODUCTION TAB -->
@@ -116,12 +120,12 @@
                 <div>
                     <div class="form-group">
                         <label for="video-title">Scene Title</label>
-                        <input type="text" id="video-title" value="Global Blockbuster">
+                        <input type="text" id="video-title" value="World Class Feature">
                     </div>
                     <div class="form-group">
-                        <label for="mode-select">Scene Format (Mode)</label>
+                        <label for="mode-select" onchange="updateModeRequirements()">Scene Format (Sex Mode)</label>
                         <select id="mode-select" onchange="updateModeRequirements()">
-                            <option value="Solo">Solo (1 Female or 1 Male)</option>
+                            <option value="Solo">Solo (1 Star)</option>
                             <option value="MF">MF (1 Male, 1 Female)</option>
                             <option value="FF">FF (2 Females)</option>
                             <option value="MFF">MFF (1 Male, 2 Females)</option>
@@ -146,13 +150,24 @@
 
         <div class="card">
             <h3>Operations Control</h3>
-            <p>Group layouts demand higher execution logistics but yield extreme conversion metrics among specialized target audiences.</p>
+            <p>Every dynamic performance configuration changes audience outreach values based directly on total participant charisma.</p>
             <button class="btn" style="background-color: var(--success);" onclick="nextDay()">Advance Calendar Day</button>
         </div>
     </div>
 
     <!-- TRAVEL TAB -->
     <div id="travel" class="tab-content">
+        <div class="filter-bar">
+            <label style="margin: auto 0;">Region Filter:</label>
+            <select id="region-filter" onchange="renderTravelTab()" style="width: 200px;">
+                <option value="All">All Continents</option>
+                <option value="Americas">Americas</option>
+                <option value="Europe">Europe</option>
+                <option value="Asia">Asia</option>
+                <option value="Africa">Africa</option>
+                <option value="Oceania">Oceania</option>
+            </select>
+        </div>
         <!-- Loaded via JS -->
     </div>
 
@@ -170,73 +185,252 @@
     <div style="margin-top: 30px;">
         <h4 style="margin-bottom: 10px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Corporate Activity Log</h4>
         <div class="log-container" id="log-box">
-            [System]: Global Network Activated. Select a flight destination to find local regional stars.
+            [System]: Global Network Online. Use "Flight Departure" tab to navigate across all global territories.
         </div>
     </div>
 
     <script>
-        // Structural Configuration Data
-        const travelHubs = {
-            "Los Angeles": { flightCost: 0, description: "Mainstream western media center. High talent pool variety." },
-            "Tokyo": { flightCost: 1200, description: "Specialized idol industries and unique regional thematic niches." },
-            "London": { flightCost: 800, description: "Independent alternative underground creators and high-clout models." },
-            "Budapest": { flightCost: 1500, description: "High-volume execution spaces with excellent premium talent accessibility." }
-        };
-
-        const globalTalentPool = [
-            { id: 1, name: "Chloe Vance", gender: "F", charisma: 18, location: "Los Angeles", cost: 2500 },
-            { id: 2, name: "Marcus Stone", gender: "M", charisma: 15, location: "Los Angeles", cost: 1500 },
-            { id: 3, name: "Yuki Sora", gender: "F", charisma: 35, location: "Tokyo", cost: 6000 },
-            { id: 4, name: "Kenji Sato", gender: "M", charisma: 22, location: "Tokyo", cost: 3000 },
-            { id: 5, name: "Amelie Rose", gender: "F", charisma: 28, location: "London", cost: 4500 },
-            { id: 6, name: "Dimitri K", gender: "M", charisma: 26, location: "Budapest", cost: 3500 },
-            { id: 7, name: "Elena Rez", gender: "F", charisma: 50, location: "Budapest", cost: 9500 },
-            { id: 8, name: "Jax Sterling", gender: "M", charisma: 38, location: "London", cost: 5000 }
+        // Massive Comprehensive Global Database Matrix
+        const countriesDatabase = [
+            // Americas
+            { name: "United States", region: "Americas", tier: "Premium", flightCost: 0, description: "Mainstream industrial superpower. High market saturation." },
+            { name: "Canada", region: "Americas", tier: "Standard", flightCost: 800, description: "Excellent alternative indie and webcam communities." },
+            { name: "Brazil", region: "Americas", tier: "Standard", flightCost: 1500, description: "High natural star performance charisma outputs." },
+            { name: "Mexico", region: "Americas", tier: "Budget", flightCost: 1000, description: "Emerging production markets and low execution overheads." },
+            { name: "Colombia", region: "Americas", tier: "Budget", flightCost: 1600, description: "Major global hub for premium modeling talent." },
+            // Europe
+            { name: "United Kingdom", region: "Europe", tier: "Premium", flightCost: 2000, description: "High-end content networks and alternative alternative stars." },
+            { name: "Budapest (Hungary)", region: "Europe", tier: "Premium", flightCost: 2500, description: "The capital of European adult film productions." },
+            { name: "Germany", region: "Europe", tier: "Standard", flightCost: 2200, description: "Niche market dominance and massive consumer spend metrics." },
+            { name: "Czech Republic", region: "Europe", tier: "Standard", flightCost: 2400, description: "Renowned globally for high-caliber professional performers." },
+            { name: "France", region: "Europe", tier: "Standard", flightCost: 2100, description: "Artistic, high-production stylized adult content structures." },
+            // Asia
+            { name: "Japan", region: "Europe", tier: "Premium", flightCost: 3500, description: "Massive localized studio systems and idol formatting layouts." },
+            { name: "South Korea", region: "Asia", tier: "Standard", flightCost: 3200, description: "High internet speed infrastructure and premium webcam modeling houses." },
+            { name: "Thailand", region: "Asia", tier: "Budget", flightCost: 2800, description: "Massive content creators and underground indie systems." },
+            { name: "India", region: "Asia", tier: "Budget", flightCost: 3000, description: "Highly restricted local markets with rapid digital viewer metrics scaling." },
+            { name: "Philippines", region: "Asia", tier: "Budget", flightCost: 2900, description: "Rapidly expanding independent online digital creator hub." },
+            // Africa
+            { name: "South Africa", region: "Africa", tier: "Standard", flightCost: 2600, description: "Southern hemisphere studio base with excellent regional reach." },
+            { name: "Nigeria", region: "Africa", tier: "Budget", flightCost: 2400, description: "Expanding baseline entertainment infrastructure frameworks." },
+            { name: "Egypt", region: "Africa", tier: "Budget", flightCost: 2200, description: "High underground independent production operations." },
+            // Oceania
+            { name: "Australia", region: "Oceania", tier: "Premium", flightCost: 3800, description: "Isolated premium talent pool commanding major global engagement." },
+            { name: "New Zealand", region: "Oceania", tier: "Standard", flightCost: 4000, description: "Small boutique talent networks with pristine output metrics." }
         ];
 
-        // Runtime Engine State
+        // Seed pools used to procedurally generate new available hires upon landing
+        const firstNames = ["Sasha", "Johnny", "Mia", "Danny", "Riley", "Kendra", "Angela", "Eva", "Abella", "Lana", "Charles", "Vince", "Keiran", "Christian"];
+        const lastNames = ["Sin", "Sins", "Malkova", "D", "Reid", "White", "K", "Elfie", "Danger", "Rhoades", "Black", "Blunt", "Stone", "Steele"];
+
+        // State Machine
         let state = {
-            cash: 25000,
-            subs: 150,
+            cash: 35000,
+            subs: 500,
             day: 1,
-            currentLocation: "Los Angeles",
+            currentLocation: "United States",
             myRoster: [
-                { id: 101, name: "Roxie Fox", gender: "F", charisma: 12 },
-                { id: 102, name: "Brad Hunter", gender: "M", gender: "M", charisma: 10 }
-            ]
+                { id: 999, name: "Amber Ray", gender: "F", charisma: 15 },
+                { id: 998, name: "Brad Hammer", gender: "M", charisma: 12 }
+            ],
+            localRecruits: []
         };
 
         const MODE_RULES = {
-            "Solo": { minF: 0, minM: 0, minTotal: 1, maxTotal: 1, baseCost: 500 },
-            "MF": { minF: 1, minM: 1, minTotal: 2, maxTotal: 2, baseCost: 1200 },
-            "FF": { minF: 2, minM: 0, minTotal: 2, maxTotal: 2, baseCost: 1500 },
-            "MFF": { minF: 2, minM: 1, minTotal: 3, maxTotal: 3, baseCost: 2200 },
-            "MMF": { minF: 1, minM: 2, minTotal: 3, maxTotal: 3, baseCost: 2200 },
-            "MMMF": { minF: 1, minM: 3, minTotal: 4, maxTotal: 4, baseCost: 3500 },
-            "Gangbang": { minF: 1, minM: 3, minTotal: 4, maxTotal: 12, baseCost: 6000 }
+            "Solo": { minF: 0, minM: 0, minTotal: 1, maxTotal: 1, baseCost: 600 },
+            "MF": { minF: 1, minM: 1, minTotal: 2, maxTotal: 2, baseCost: 1400 },
+            "FF": { minF: 2, minM: 0, minTotal: 2, maxTotal: 2, baseCost: 1800 },
+            "MFF": { minF: 2, minM: 1, minTotal: 3, maxTotal: 3, baseCost: 2500 },
+            "MMF": { minF: 1, minM: 2, minTotal: 3, maxTotal: 3, baseCost: 2500 },
+            "MMMF": { minF: 1, minM: 3, minTotal: 4, maxTotal: 4, baseCost: 4000 },
+            "Gangbang": { minF: 1, minM: 3, minTotal: 4, maxTotal: 10, baseCost: 7500 }
         };
 
-        function updateUI() {
-            document.getElementById('cash-display').innerText = `$${state.cash.toLocaleString()}`;
-            document.getElementById('subs-display').innerText = state.subs.toLocaleString();
-            document.getElementById('day-display').innerText = state.day;
-            document.getElementById('location-display').innerText = state.currentLocation;
-
-            updateCastCheckboxes();
-            updateModeRequirements();
-            renderTravelTab();
-            renderRecruitTab();
-            renderRosterTab();
+        // Fix logic errors across tab toggling by introducing proper event forwarding targets
+        function switchTab(e, tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            if (e && e.target) {
+                e.target.classList.add('active');
+            } else {
+                // Autumn fallback handling
+                event.target.classList.add('active');
+            }
         }
 
-        function updateModeRequirements() {
+        function logMessage(text) {
+            const logBox = document.getElementById('log-box');
+            logBox.innerHTML += `<br>[Day ${state.day}]: ${text}`;
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Generate customized localized stars based on country context tiering values
+        function generateLocalTalent(countryName) {
+            const country = countriesDatabase.find(c => c.name === countryName);
+            let tierMult = country.tier === "Premium" ? 2.5 : country.tier === "Standard" ? 1.5 : 0.9;
+            
+            state.localRecruits = [];
+            for (let i = 0; i < 3; i++) {
+                let gender = Math.random() > 0.4 ? "F" : "M";
+                let fName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                let lName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                let charisma = Math.floor((Math.random() * 20 + 10) * tierMult);
+                let cost = Math.floor(charisma * 180);
+
+                state.localRecruits.push({
+                    id: Date.now() + i,
+                    name: `${fName} ${lName}`,
+                    gender: gender,
+                    charisma: charisma,
+                    cost: cost,
+                    origin: countryName
+                });
+            }
+        }
+
+        function flyToHub(destinationName) {
+            const country = countriesDatabase.find(c => c.name === destinationName);
+            if (!country) return;
+
+            if (state.cash >= country.flightCost) {
+                state.cash -= country.flightCost;
+                state.currentLocation = destinationName;
+                generateLocalTalent(destinationName);
+                logMessage(`✈️ Flight landed in ${destinationName}. Aviation ledger cleared: -$${country.flightCost}. Local modeling agencies updated.`);
+                updateUI();
+            }
+        }
+
+        function hireStar(id) {
+            const idx = state.localRecruits.findIndex(p => p.id === id);
+            if (idx === -1) return;
+            const star = state.localRecruits[idx];
+
+            if (state.cash >= star.cost) {
+                state.cash -= star.cost;
+                state.myRoster.push(star);
+                state.localRecruits.splice(idx, 1);
+                logMessage(`✍️ Exclusively retained ${star.name} via ${state.currentLocation} legal channels.`);
+                updateUI();
+            }
+        }
+
+        function shootAdvancedVideo() {
+            const title = document.getElementById('video-title').value || "Global Sensation";
             const mode = document.getElementById('mode-select').value;
             const rule = MODE_RULES[mode];
-            let txt = `Requires: Total Personnel: ${rule.minTotal}. `;
-            if (rule.minF > 0) txt += `Min Females: ${rule.minF}. `;
-            if (rule.minM > 0) txt += `Min Males: ${rule.minM}. `;
-            txt += `Base Operating Overhead: $${rule.baseCost}`;
-            document.getElementById('mode-requirements').innerText = txt;
+
+            const checkedBoxes = document.querySelectorAll('input[name="cast-member"]:checked');
+            let selectedCast = [];
+            checkedBoxes.forEach(box => {
+                const found = state.myRoster.find(p => p.id === parseInt(box.value));
+                if (found) selectedCast.push(found);
+            });
+
+            if (selectedCast.length < rule.minTotal || selectedCast.length > rule.maxTotal) {
+                logMessage(`⚠️ Script Error: "${mode}" needs between ${rule.minTotal} and ${rule.maxTotal} stars checked.`);
+                return;
+            }
+
+            let femaleCount = selectedCast.filter(p => p.gender === 'F').length;
+            let maleCount = selectedCast.filter(p => p.gender === 'M').length;
+
+            if (femaleCount < rule.minF || maleCount < rule.minM) {
+                logMessage(`⚠️ Demographic Error: Layout for ${mode} requires more participants of matching configurations.`);
+                return;
+            }
+
+            if (state.cash < rule.baseCost) {
+                logMessage(`⚠️ Financial Error: Cash reserves too low to cover film costs.`);
+                return;
+            }
+
+            state.cash -= rule.baseCost;
+            let combinedCharisma = selectedCast.reduce((sum, p) => sum + p.charisma, 0);
+            
+            let formatMultiplier = 1.0;
+            if (mode === "MFF" || mode === "MMF") formatMultiplier = 1.4;
+            if (mode === "MMMF") formatMultiplier = 1.8;
+            if (mode === "Gangbang") formatMultiplier = 2.5;
+
+            let subsGained = Math.floor(combinedCharisma * 15 * formatMultiplier);
+            state.subs += subsGained;
+
+            logMessage(`🎬 Success: Filmed "${title}" [${mode}]. Combined Power: ${combinedCharisma}. +${subsGained} Subs.`);
+            updateUI();
+        }
+
+        function nextDay() {
+            let activeRevenue = Math.floor(state.subs * 0.55);
+            state.cash += activeRevenue;
+            state.day += 1;
+            logMessage(`☀️ Day processing done. Daily recurring subscriptions paid out $${activeRevenue}.`);
+            updateUI();
+        }
+
+        // Render functions updating interface nodes dynamically
+        function renderTravelTab() {
+            const container = document.getElementById('travel');
+            const filterValue = document.getElementById('region-filter').value;
+            
+            // Retain the filter bar
+            const filterBarHtml = container.querySelector('.filter-bar').outerHTML;
+            
+            let filteredCountries = countriesDatabase;
+            if (filterValue !== "All") {
+                filteredCountries = countriesDatabase.filter(c => c.region === filterValue);
+            }
+
+            let cardsHtml = filteredCountries.map(c => {
+                const isCurrent = state.currentLocation === c.name;
+                return `
+                    <div class="card">
+                        <h3>${c.name} <span class="badge tier">${c.tier}</span></h3>
+                        <p>${c.description}</p>
+                        <p>Flight Base Expense: <strong>$${c.flightCost.toLocaleString()}</strong></p>
+                        <button class="btn" onclick="flyToHub('${c.name}')" ${isCurrent || state.cash < c.flightCost ? 'disabled' : ''}>
+                            ${isCurrent ? 'Stationed Here' : 'Fly Out'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = filterBarHtml + cardsHtml;
+            // Re-sync filter selector visualization element
+            document.getElementById('region-filter').value = filterValue;
+        }
+
+        function renderRecruitTab() {
+            const container = document.getElementById('recruit');
+            if(state.localRecruits.length === 0) {
+                container.innerHTML = `<div class="card" style="grid-column: 1/-1;"><p>No active applications currently processing in ${state.currentLocation}. Relocate to generate new rosters.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = state.localRecruits.map(p => `
+                <div class="card">
+                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
+                    <p>Calculated Charisma Potential: <strong>${p.charisma}</strong></p>
+                    <p>Contract Value: <strong>$${p.cost.toLocaleString()}</strong></p>
+                    <button class="btn" onclick="hireStar(${p.id})" ${state.cash < p.cost ? 'disabled' : ''}>Sign Contract</button>
+                </div>
+            `).join('');
+        }
+
+        function renderRosterTab() {
+            const container = document.getElementById('roster');
+            if (state.myRoster.length === 0) {
+                container.innerHTML = `<p>No talent currently hired.</p>`;
+                return;
+            }
+            container.innerHTML = state.myRoster.map(p => `
+                <div class="card">
+                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
+                    <p>Current Clout Multiplier: <strong>${p.charisma}</strong></p>
+                </div>
+            `).join('');
         }
 
         function updateCastCheckboxes() {
@@ -249,151 +443,32 @@
             `).join('');
         }
 
-        function renderTravelTab() {
-            const container = document.getElementById('travel');
-            container.innerHTML = Object.keys(travelHubs).map(name => {
-                const hub = travelHubs[name];
-                const isCurrent = state.currentLocation === name;
-                return `
-                    <div class="card">
-                        <h3>${name} ${isCurrent ? '<span class="badge" style="background:var(--success)">Current Base</span>' : ''}</h3>
-                        <p>${hub.description}</p>
-                        <p>Ticket Price: <strong>$${hub.flightCost.toLocaleString()}</strong></p>
-                        <button class="btn" onclick="flyToHub('${name}')" ${isCurrent || state.cash < hub.flightCost ? 'disabled' : ''}>
-                            ${isCurrent ? 'Stationed' : 'Book Flight'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
+        function updateUI() {
+            document.getElementById('cash-display').innerText = `$${state.cash.toLocaleString()}`;
+            document.getElementById('subs-display').innerText = state.subs.toLocaleString();
+            document.getElementById('day-display').innerText = state.day;
+            document.getElementById('location-display').innerText = state.currentLocation;
+
+            updateCastCheckboxes();
+            renderTravelTab();
+            renderRecruitTab();
+            renderRosterTab();
         }
 
-        function renderRecruitTab() {
-            const container = document.getElementById('recruit');
-            const localPool = globalTalentPool.filter(p => p.location === state.currentLocation);
-
-            if(localPool.length === 0) {
-                container.innerHTML = `<div class="card" style="grid-column: 1/-1;"><p>No local talent open for applications in ${state.currentLocation} today. Check other global cities.</p></div>`;
-                return;
-            }
-
-            container.innerHTML = localPool.map(p => `
-                <div class="card">
-                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
-                    <p>Market Clout Score: <strong>${p.charisma}</strong></p>
-                    <p>Signing Valuation Price: <strong>$${p.cost.toLocaleString()}</strong></p>
-                    <button class="btn" onclick="hireStar(${p.id})" ${state.cash < p.cost ? 'disabled' : ''}>Acquire Contract</button>
-                </div>
-            `).join('');
-        }
-
-        function renderRosterTab() {
-            const container = document.getElementById('roster');
-            if (state.myRoster.length === 0) {
-                container.innerHTML = `<p>Roster empty.</p>`;
-                return;
-            }
-            container.innerHTML = state.myRoster.map(p => `
-                <div class="card">
-                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
-                    <p>Individual Charisma: <strong>${p.charisma}</strong></p>
-                </div>
-            `).join('');
-        }
-
-        // TRAVEL SYSTEM FLIGHT ENGINE
-        function flyToHub(destination) {
-            const cost = travelHubs[destination].flightCost;
-            if (state.cash >= cost) {
-                state.cash -= cost;
-                state.currentLocation = destination;
-                logMessage(`✈️ Relocated operations center to ${destination}. Direct flight ledger processed: -$${cost}.`);
-                updateUI();
-            }
-        }
-
-        // RECRUITMENT LOGIC
-        function hireStar(id) {
-            const idx = globalTalentPool.findIndex(p => p.id === id);
-            if (idx === -1) return;
-            const star = globalTalentPool[idx];
-
-            if (state.cash >= star.cost) {
-                state.cash -= star.cost;
-                state.myRoster.push(star);
-                globalTalentPool.splice(idx, 1); // Remove from public availability pool
-                logMessage(`✍️ Exclusively signed contract with ${star.name} out of the ${star.location} agency roster.`);
-                updateUI();
-            }
-        }
-
-        // COMPLEX CONTENT PRODUCTION RESOLUTION
-        function shootAdvancedVideo() {
-            const title = document.getElementById('video-title').value || "Standard Broadcast";
+        function updateModeRequirements() {
             const mode = document.getElementById('mode-select').value;
             const rule = MODE_RULES[mode];
-
-            // Harvest values from UI array checkbox configurations
-            const checkedBoxes = document.querySelectorAll('input[name="cast-member"]:checked');
-            let selectedCast = [];
-            checkedBoxes.forEach(box => {
-                const found = state.myRoster.find(p => p.id === parseInt(box.value));
-                if (found) selectedCast.push(found);
-            });
-
-            // Format Validation Checkpoints
-            if (selectedCast.length < rule.minTotal || selectedCast.length > rule.maxTotal) {
-                logMessage(`⚠️ Production Error: Mode "${mode}" requires precisely between ${rule.minTotal} and ${rule.maxTotal} cast members. Selected: ${selectedCast.length}`);
-                return;
-            }
-
-            let femaleCount = selectedCast.filter(p => p.gender === 'F').length;
-            let maleCount = selectedCast.filter(p => p.gender === 'M').length;
-
-            if (femaleCount < rule.minF || maleCount < rule.minM) {
-                logMessage(`⚠️ Cast Configuration Error: Mode "${mode}" demographic layout criteria not satisfied.`);
-                return;
-            }
-
-            if (state.cash < rule.baseCost) {
-                logMessage(`⚠️ Financial Error: Inadequate operating cash liquidity to clear production costs.`);
-                return;
-            }
-
-            // Calculate Metrics Output
-            state.cash -= rule.baseCost;
-            let combinedCharisma = selectedCast.reduce((sum, p) => sum + p.charisma, 0);
-            
-            // Format Multipliers adjust based on complex resource scaling
-            let formatMultiplier = 1.0;
-            if (mode === "MFF" || mode === "MMF") formatMultiplier = 1.3;
-            if (mode === "MMMF") formatMultiplier = 1.6;
-            if (mode === "Gangbang") formatMultiplier = 2.2;
-
-            let subscribersAcquired = Math.floor(combinedCharisma * 12 * formatMultiplier);
-            state.subs += subscribersAcquired;
-
-            logMessage(`🎬 Complete: Produced ${mode} format scene titled "${title}". Total Star Power Output: ${combinedCharisma}. Acquired +${subscribersAcquired} subscribers.`);
-            updateUI();
+            let txt = `Needs: Total Stars: ${rule.minTotal}. `;
+            if (rule.minF > 0) txt += `Females: ${rule.minF}. `;
+            if (rule.minM > 0) txt += `Males: ${rule.minM}. `;
+            txt += `Cost: $${rule.baseCost}`;
+            document.getElementById('mode-requirements').innerText = txt;
         }
 
-        function nextDay() {
-            let activeRevenue = Math.floor(state.subs * 0.45);
-            state.cash += activeRevenue;
-            state.day += 1;
-            logMessage(`☀️ Day break processing complete. Premium subscriptions generated $${activeRevenue} net revenue values.`);
-            updateUI();
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        // Initialize Runtime Interface on load Execution
+        // First execution boot code setup
+        generateLocalTalent("United States");
         updateUI();
+        updateModeRequirements();
     </script>
 </body>
 </html>
- 
