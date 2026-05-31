@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+        
+               <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adult Studio Tycoon</title>
+    <title>Adult Studio Tycoon: Global Empire</title>
     <style>
         :root {
             --bg-color: #121214;
@@ -14,21 +15,12 @@
             --text-muted: #a4b0be;
             --border: #2f3542;
             --success: #2ed573;
+            --accent: #3498db;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            padding: 20px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text); padding: 20px; }
+        
         header {
             display: flex;
             justify-content: space-between;
@@ -37,9 +29,8 @@
             border-bottom: 2px solid var(--border);
             margin-bottom: 20px;
         }
-
         h1 { color: var(--primary); font-size: 24px; }
-
+        
         .stats-bar {
             display: flex;
             gap: 20px;
@@ -48,108 +39,51 @@
             border-radius: 8px;
             border: 1px solid var(--border);
         }
-
         .stat-item { font-weight: bold; }
         .stat-item span { color: var(--success); }
 
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
         .tab-btn {
-            background: var(--card-bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
+            background: var(--card-bg); color: var(--text-muted); border: 1px solid var(--border);
+            padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;
         }
+        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        /* Card Styles */
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
         }
-
-        .card h3 { margin-bottom: 10px; color: var(--text); }
-        .card p { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
-
+        .card h3 { margin-bottom: 10px; color: var(--text); display: flex; justify-content: space-between; align-items: center;}
+        .card p { color: var(--text-muted); font-size: 14px; margin-bottom: 12px; }
+        
         .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            text-align: center;
-            transition: 0.2s;
-            width: 100%;
+            background: var(--primary); color: white; border: none; padding: 10px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; text-align: center; transition: 0.2s; width: 100%;
         }
-
         .btn:hover { background: var(--primary-hover); }
         .btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
 
-        /* Production Elements */
-        .form-group {
-            margin-bottom: 15px;
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
+        select, input { width: 100%; background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 10px; border-radius: 6px; }
+        
+        .performer-checkboxes {
+            max-height: 150px; overflow-y: auto; border: 1px solid var(--border); 
+            padding: 10px; border-radius: 6px; background: var(--bg-color);
         }
+        .check-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 14px;}
+        .check-item input { width: auto; }
 
-        label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
+        .badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; background: var(--border); color: var(--text); }
+        .badge.male { background: #2980b9; color: white; }
+        .badge.female { background: #e082ac; color: white; }
 
-        select, input {
-            width: 100%;
-            background: var(--bg-color);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 10px;
-            border-radius: 6px;
-        }
-
-        /* Log / Console */
         .log-container {
-            grid-column: 1 / -1;
-            background: #000;
-            border-radius: 6px;
-            padding: 15px;
-            height: 150px;
-            overflow-y: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            color: #00ff00;
-            border: 1px solid var(--border);
+            grid-column: 1 / -1; background: #000; border-radius: 6px; padding: 15px;
+            height: 140px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #00ff00; border: 1px solid var(--border);
         }
     </style>
 </head>
@@ -157,57 +91,68 @@
 
     <header>
         <div>
-            <h1>Adult Studio Tycoon</h1>
-            <p style="color: var(--text-muted); font-size: 12px;">Build Your Adult Media Empire</p>
+            <h1>Adult Studio Tycoon: Global Empire</h1>
+            <p style="color: var(--text-muted); font-size: 12px;">Current Location: <span id="location-display" style="color: var(--accent); font-weight: bold;">Los Angeles</span></p>
         </div>
         <div class="stats-bar">
-            <div class="stat-item">Cash: <span id="cash-display">$10,000</span></div>
-            <div class="stat-item">Subscribers: <span id="subs-display" style="color: #3498db;">0</span></div>
+            <div class="stat-item">Cash: <span id="cash-display">$25,000</span></div>
+            <div class="stat-item">Subscribers: <span id="subs-display" style="color: var(--accent);">0</span></div>
             <div class="stat-item">Day: <span id="day-display" style="color: #f1c40f;">1</span></div>
         </div>
     </header>
 
     <nav class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('production')">Production</button>
-        <button class="tab-btn" onclick="switchTab('roster')">Roster</button>
+        <button class="tab-btn" onclick="switchTab('travel')">Travel / Flight</button>
         <button class="tab-btn" onclick="switchTab('recruit')">Recruit Talent</button>
+        <button class="tab-btn" onclick="switchTab('roster')">Roster</button>
     </nav>
 
     <!-- PRODUCTION TAB -->
     <div id="production" class="tab-content active">
-        <div class="card">
-            <h3>Shoot Next Scene</h3>
-            <div class="form-group">
-                <label for="video-title">Video Title</label>
-                <input type="text" id="video-title" value="Spicy Debut">
+        <div class="card" style="grid-column: span 2;">
+            <h3>Configure Content Shoot</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="form-group">
+                        <label for="video-title">Scene Title</label>
+                        <input type="text" id="video-title" value="Global Blockbuster">
+                    </div>
+                    <div class="form-group">
+                        <label for="mode-select">Scene Format (Mode)</label>
+                        <select id="mode-select" onchange="updateModeRequirements()">
+                            <option value="Solo">Solo (1 Female or 1 Male)</option>
+                            <option value="MF">MF (1 Male, 1 Female)</option>
+                            <option value="FF">FF (2 Females)</option>
+                            <option value="MFF">MFF (1 Male, 2 Females)</option>
+                            <option value="MMF">MMF (2 Males, 1 Female)</option>
+                            <option value="MMMF">MMMF (3 Males, 1 Female)</option>
+                            <option value="Gangbang">Gangbang (4+ Performers)</option>
+                        </select>
+                        <p id="mode-requirements" style="font-size: 11px; color: var(--primary); margin-top: 5px;"></p>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label>Select Cast Members From Roster</label>
+                        <div class="performer-checkboxes" id="cast-selection-box">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                    <button class="btn" style="margin-top: 10px;" onclick="shootAdvancedVideo()">Authorize Shoot & Release</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="performer-select">Select Performer</label>
-                <select id="performer-select">
-                    <!-- Loaded dynamically via JS -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="genre-select">Genre/Niche</label>
-                <select id="genre-select">
-                    <option value="Vanilla">Vanilla Romance</option>
-                    <option value="Fetish">Alternative / Fetish</option>
-                    <option value="Parody">Pop-Culture Parody</option>
-                    <option value="POV">Gonzo / POV</option>
-                </select>
-            </div>
-            <button class="btn" onclick="shootVideo()">Release Scene (-$1,500 Cost)</button>
         </div>
 
         <div class="card">
-            <h3>Studio Status</h3>
-            <p>Every video you release drives ongoing daily subscription growth based on your performers' total charisma scores.</p>
-            <button class="btn" style="background-color: #2ed573;" onclick="nextDay()">Advance to Next Day</button>
+            <h3>Operations Control</h3>
+            <p>Group layouts demand higher execution logistics but yield extreme conversion metrics among specialized target audiences.</p>
+            <button class="btn" style="background-color: var(--success);" onclick="nextDay()">Advance Calendar Day</button>
         </div>
     </div>
 
-    <!-- ROSTER TAB -->
-    <div id="roster" class="tab-content">
+    <!-- TRAVEL TAB -->
+    <div id="travel" class="tab-content">
         <!-- Loaded via JS -->
     </div>
 
@@ -216,160 +161,239 @@
         <!-- Loaded via JS -->
     </div>
 
-    <!-- SYSTEM ACTIVITY LOG -->
+    <!-- ROSTER TAB -->
+    <div id="roster" class="tab-content">
+        <!-- Loaded via JS -->
+    </div>
+
+    <!-- MONITORING CONSOLE -->
     <div style="margin-top: 30px;">
-        <h4 style="margin-bottom: 10px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Studio Notifications</h4>
+        <h4 style="margin-bottom: 10px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Corporate Activity Log</h4>
         <div class="log-container" id="log-box">
-            [System]: Studio open for business. Recruit stars and shoot content to acquire subscribers.
+            [System]: Global Network Activated. Select a flight destination to find local regional stars.
         </div>
     </div>
 
     <script>
-        // Game State Variables
+        // Structural Configuration Data
+        const travelHubs = {
+            "Los Angeles": { flightCost: 0, description: "Mainstream western media center. High talent pool variety." },
+            "Tokyo": { flightCost: 1200, description: "Specialized idol industries and unique regional thematic niches." },
+            "London": { flightCost: 800, description: "Independent alternative underground creators and high-clout models." },
+            "Budapest": { flightCost: 1500, description: "High-volume execution spaces with excellent premium talent accessibility." }
+        };
+
+        const globalTalentPool = [
+            { id: 1, name: "Chloe Vance", gender: "F", charisma: 18, location: "Los Angeles", cost: 2500 },
+            { id: 2, name: "Marcus Stone", gender: "M", charisma: 15, location: "Los Angeles", cost: 1500 },
+            { id: 3, name: "Yuki Sora", gender: "F", charisma: 35, location: "Tokyo", cost: 6000 },
+            { id: 4, name: "Kenji Sato", gender: "M", charisma: 22, location: "Tokyo", cost: 3000 },
+            { id: 5, name: "Amelie Rose", gender: "F", charisma: 28, location: "London", cost: 4500 },
+            { id: 6, name: "Dimitri K", gender: "M", charisma: 26, location: "Budapest", cost: 3500 },
+            { id: 7, name: "Elena Rez", gender: "F", charisma: 50, location: "Budapest", cost: 9500 },
+            { id: 8, name: "Jax Sterling", gender: "M", charisma: 38, location: "London", cost: 5000 }
+        ];
+
+        // Runtime Engine State
         let state = {
-            cash: 10000,
-            subs: 0,
+            cash: 25000,
+            subs: 150,
             day: 1,
+            currentLocation: "Los Angeles",
             myRoster: [
-                { id: 101, name: "Alex Nova", charisma: 14, style: "Vanilla", cost: 0 },
-                { id: 102, name: "Jordan Lux", charisma: 18, style: "POV", cost: 0 }
-            ],
-            recruits: [
-                { id: 1, name: "Vesper Thorne", charisma: 25, style: "Fetish", cost: 3000 },
-                { id: 2, name: "Harley Wilde", charisma: 32, style: "Parody", cost: 5500 },
-                { id: 3, name: "Sienna Silk", charisma: 45, style: "Vanilla", cost: 9000 }
+                { id: 101, name: "Roxie Fox", gender: "F", charisma: 12 },
+                { id: 102, name: "Brad Hunter", gender: "M", gender: "M", charisma: 10 }
             ]
         };
 
-        // Constants
-        const PRODUCTION_COST = 1500;
-        const SUB_REVENUE_PER_CAPITA = 0.50; // Cash earned per subscriber daily
+        const MODE_RULES = {
+            "Solo": { minF: 0, minM: 0, minTotal: 1, maxTotal: 1, baseCost: 500 },
+            "MF": { minF: 1, minM: 1, minTotal: 2, maxTotal: 2, baseCost: 1200 },
+            "FF": { minF: 2, minM: 0, minTotal: 2, maxTotal: 2, baseCost: 1500 },
+            "MFF": { minF: 2, minM: 1, minTotal: 3, maxTotal: 3, baseCost: 2200 },
+            "MMF": { minF: 1, minM: 2, minTotal: 3, maxTotal: 3, baseCost: 2200 },
+            "MMMF": { minF: 1, minM: 3, minTotal: 4, maxTotal: 4, baseCost: 3500 },
+            "Gangbang": { minF: 1, minM: 3, minTotal: 4, maxTotal: 12, baseCost: 6000 }
+        };
 
-        // Initialize UI Elements
         function updateUI() {
             document.getElementById('cash-display').innerText = `$${state.cash.toLocaleString()}`;
             document.getElementById('subs-display').innerText = state.subs.toLocaleString();
             document.getElementById('day-display').innerText = state.day;
+            document.getElementById('location-display').innerText = state.currentLocation;
 
-            // Update Performer Dropdown inside Production panel
-            const select = document.getElementById('performer-select');
-            select.innerHTML = '';
-            state.myRoster.forEach(p => {
-                select.innerHTML += `<option value="${p.id}">${p.name} (Charisma: ${p.charisma})</option>`;
-            });
+            updateCastCheckboxes();
+            updateModeRequirements();
+            renderTravelTab();
+            renderRecruitTab();
+            renderRosterTab();
+        }
 
-            // Update Roster View Tab
-            const rosterTab = document.getElementById('roster');
-            if(state.myRoster.length === 0) {
-                rosterTab.innerHTML = `<div class="card"><p>Your active roster is empty. Go recruit talent!</p></div>`;
-            } else {
-                rosterTab.innerHTML = state.myRoster.map(p => `
+        function updateModeRequirements() {
+            const mode = document.getElementById('mode-select').value;
+            const rule = MODE_RULES[mode];
+            let txt = `Requires: Total Personnel: ${rule.minTotal}. `;
+            if (rule.minF > 0) txt += `Min Females: ${rule.minF}. `;
+            if (rule.minM > 0) txt += `Min Males: ${rule.minM}. `;
+            txt += `Base Operating Overhead: $${rule.baseCost}`;
+            document.getElementById('mode-requirements').innerText = txt;
+        }
+
+        function updateCastCheckboxes() {
+            const container = document.getElementById('cast-selection-box');
+            container.innerHTML = state.myRoster.map(p => `
+                <div class="check-item">
+                    <input type="checkbox" name="cast-member" value="${p.id}">
+                    <span>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span> (CH: ${p.charisma})</span>
+                </div>
+            `).join('');
+        }
+
+        function renderTravelTab() {
+            const container = document.getElementById('travel');
+            container.innerHTML = Object.keys(travelHubs).map(name => {
+                const hub = travelHubs[name];
+                const isCurrent = state.currentLocation === name;
+                return `
                     <div class="card">
-                        <h3>${p.name}</h3>
-                        <p>Specialty: <strong>${p.style}</strong></p>
-                        <p>Charisma Level: <strong>${p.charisma}</strong></p>
+                        <h3>${name} ${isCurrent ? '<span class="badge" style="background:var(--success)">Current Base</span>' : ''}</h3>
+                        <p>${hub.description}</p>
+                        <p>Ticket Price: <strong>$${hub.flightCost.toLocaleString()}</strong></p>
+                        <button class="btn" onclick="flyToHub('${name}')" ${isCurrent || state.cash < hub.flightCost ? 'disabled' : ''}>
+                            ${isCurrent ? 'Stationed' : 'Book Flight'}
+                        </button>
                     </div>
-                `).join('');
-            }
-
-            // Update Recruitment Panel Tab
-            const recruitTab = document.getElementById('recruit');
-            if(state.recruits.length === 0) {
-                recruitTab.innerHTML = `<div class="card"><p>No new applications today. Check back tomorrow.</p></div>`;
-            } else {
-                recruitTab.innerHTML = state.recruits.map(p => `
-                    <div class="card">
-                        <h3>${p.name}</h3>
-                        <p>Niche Market: <strong>${p.style}</strong></p>
-                        <p>Starting Charisma: <strong>${p.charisma}</strong></p>
-                        <p>Signing Fee: <strong>$${p.cost.toLocaleString()}</strong></p>
-                        <button class="btn" onclick="hirePerformer(${p.id})" ${state.cash < p.cost ? 'disabled' : ''}>Sign Contract</button>
-                    </div>
-                `).join('');
-            }
+                `;
+            }).join('');
         }
 
-        // Tab Swapping Routine
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
+        function renderRecruitTab() {
+            const container = document.getElementById('recruit');
+            const localPool = globalTalentPool.filter(p => p.location === state.currentLocation);
 
-        // Log Console Printer
-        function logMessage(text) {
-            const logBox = document.getElementById('log-box');
-            logBox.innerHTML += `<br>[Day ${state.day}]: ${text}`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        // Primary Action: Release Scene
-        function shootVideo() {
-            if (state.cash < PRODUCTION_COST) {
-                logMessage("⚠️ Error: Insufficient capital to cover production costs.");
+            if(localPool.length === 0) {
+                container.innerHTML = `<div class="card" style="grid-column: 1/-1;"><p>No local talent open for applications in ${state.currentLocation} today. Check other global cities.</p></div>`;
                 return;
             }
 
-            const title = document.getElementById('video-title').value || "Untitled Scene";
-            const performerId = parseInt(document.getElementById('performer-select').value);
-            const genre = document.getElementById('genre-select').value;
-            const performer = state.myRoster.find(p => p.id === performerId);
-
-            if (!performer) {
-                logMessage("⚠️ Error: You must employ at least one performer.");
-                return;
-            }
-
-            // Calculate Subscriber Gain Output
-            let baseGain = performer.charisma * 15;
-            if (performer.style === genre) {
-                baseGain = Math.floor(baseGain * 1.5); // 50% synergy bonus
-                logMessage(`✨ Style Synergy! ${performer.name} excels at ${genre} content.`);
-            }
-
-            state.cash -= PRODUCTION_COST;
-            state.subs += baseGain;
-
-            logMessage(`🎬 Released scene: "${title}" starring ${performer.name}. Gained +${baseGain} new subscribers.`);
-            updateUI();
+            container.innerHTML = localPool.map(p => `
+                <div class="card">
+                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
+                    <p>Market Clout Score: <strong>${p.charisma}</strong></p>
+                    <p>Signing Valuation Price: <strong>$${p.cost.toLocaleString()}</strong></p>
+                    <button class="btn" onclick="hireStar(${p.id})" ${state.cash < p.cost ? 'disabled' : ''}>Acquire Contract</button>
+                </div>
+            `).join('');
         }
 
-        // Action: Sign Contract
-        function hirePerformer(id) {
-            const idx = state.recruits.findIndex(p => p.id === id);
-            if (idx === -1) return;
-            const candidate = state.recruits[idx];
+        function renderRosterTab() {
+            const container = document.getElementById('roster');
+            if (state.myRoster.length === 0) {
+                container.innerHTML = `<p>Roster empty.</p>`;
+                return;
+            }
+            container.innerHTML = state.myRoster.map(p => `
+                <div class="card">
+                    <h3>${p.name} <span class="badge ${p.gender === 'M' ? 'male' : 'female'}">${p.gender}</span></h3>
+                    <p>Individual Charisma: <strong>${p.charisma}</strong></p>
+                </div>
+            `).join('');
+        }
 
-            if (state.cash >= candidate.cost) {
-                state.cash -= candidate.cost;
-                state.myRoster.push(candidate);
-                state.recruits.splice(idx, 1);
-                logMessage(`✍️ Contract signed: ${candidate.name} has joined your studio.`);
+        // TRAVEL SYSTEM FLIGHT ENGINE
+        function flyToHub(destination) {
+            const cost = travelHubs[destination].flightCost;
+            if (state.cash >= cost) {
+                state.cash -= cost;
+                state.currentLocation = destination;
+                logMessage(`✈️ Relocated operations center to ${destination}. Direct flight ledger processed: -$${cost}.`);
                 updateUI();
             }
         }
 
-        // Action: Step Clock Forward
-        function nextDay() {
-            // Process subscription revenues
-            let dailyRevenue = Math.floor(state.subs * SUB_REVENUE_PER_CAPITA);
-            state.cash += dailyRevenue;
+        // RECRUITMENT LOGIC
+        function hireStar(id) {
+            const idx = globalTalentPool.findIndex(p => p.id === id);
+            if (idx === -1) return;
+            const star = globalTalentPool[idx];
 
-            // Generate slight passive subscriber flux/decay
-            let naturalGrowth = 0;
-            state.myRoster.forEach(p => { naturalGrowth += Math.floor(p.charisma * 0.5); });
-            state.subs += naturalGrowth;
+            if (state.cash >= star.cost) {
+                state.cash -= star.cost;
+                state.myRoster.push(star);
+                globalTalentPool.splice(idx, 1); // Remove from public availability pool
+                logMessage(`✍️ Exclusively signed contract with ${star.name} out of the ${star.location} agency roster.`);
+                updateUI();
+            }
+        }
 
-            state.day += 1;
-            logMessage(`☀️ Day processing complete. Subscriptions netted $${dailyRevenue}. Passive studio clout brought in +${naturalGrowth} new viewers.`);
+        // COMPLEX CONTENT PRODUCTION RESOLUTION
+        function shootAdvancedVideo() {
+            const title = document.getElementById('video-title').value || "Standard Broadcast";
+            const mode = document.getElementById('mode-select').value;
+            const rule = MODE_RULES[mode];
+
+            // Harvest values from UI array checkbox configurations
+            const checkedBoxes = document.querySelectorAll('input[name="cast-member"]:checked');
+            let selectedCast = [];
+            checkedBoxes.forEach(box => {
+                const found = state.myRoster.find(p => p.id === parseInt(box.value));
+                if (found) selectedCast.push(found);
+            });
+
+            // Format Validation Checkpoints
+            if (selectedCast.length < rule.minTotal || selectedCast.length > rule.maxTotal) {
+                logMessage(`⚠️ Production Error: Mode "${mode}" requires precisely between ${rule.minTotal} and ${rule.maxTotal} cast members. Selected: ${selectedCast.length}`);
+                return;
+            }
+
+            let femaleCount = selectedCast.filter(p => p.gender === 'F').length;
+            let maleCount = selectedCast.filter(p => p.gender === 'M').length;
+
+            if (femaleCount < rule.minF || maleCount < rule.minM) {
+                logMessage(`⚠️ Cast Configuration Error: Mode "${mode}" demographic layout criteria not satisfied.`);
+                return;
+            }
+
+            if (state.cash < rule.baseCost) {
+                logMessage(`⚠️ Financial Error: Inadequate operating cash liquidity to clear production costs.`);
+                return;
+            }
+
+            // Calculate Metrics Output
+            state.cash -= rule.baseCost;
+            let combinedCharisma = selectedCast.reduce((sum, p) => sum + p.charisma, 0);
+            
+            // Format Multipliers adjust based on complex resource scaling
+            let formatMultiplier = 1.0;
+            if (mode === "MFF" || mode === "MMF") formatMultiplier = 1.3;
+            if (mode === "MMMF") formatMultiplier = 1.6;
+            if (mode === "Gangbang") formatMultiplier = 2.2;
+
+            let subscribersAcquired = Math.floor(combinedCharisma * 12 * formatMultiplier);
+            state.subs += subscribersAcquired;
+
+            logMessage(`🎬 Complete: Produced ${mode} format scene titled "${title}". Total Star Power Output: ${combinedCharisma}. Acquired +${subscribersAcquired} subscribers.`);
             updateUI();
         }
 
-        // Initial Runtime Execution
+        function nextDay() {
+            let activeRevenue = Math.floor(state.subs * 0.45);
+            state.cash += activeRevenue;
+            state.day += 1;
+            logMessage(`☀️ Day break processing complete. Premium subscriptions generated $${activeRevenue} net revenue values.`);
+            updateUI();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Initialize Runtime Interface on load Execution
         updateUI();
     </script>
 </body>
-  </html>
-                                                  
+</html>
+ 
